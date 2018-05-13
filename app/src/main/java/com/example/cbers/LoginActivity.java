@@ -3,7 +3,10 @@ package com.example.cbers;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -19,6 +22,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -29,8 +33,19 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.cbers.common.HttpUtils;
+import com.example.cbers.common.SessionManager;
+import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import cz.msebera.android.httpclient.Header;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -44,13 +59,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      */
     private static final int REQUEST_READ_CONTACTS = 0;
 
-    /**
-     * A dummy authentication store containing known user names and passwords.
-     * TODO: remove after connecting to a real authentication system.
-     */
-    private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "foo@example.com:hello", "bar@example.com:world"
-    };
+    SessionManager session;
+    private boolean loginSuccess = false;
+
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
@@ -65,7 +76,21 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        session = new SessionManager(getApplicationContext());
+        if(session.isLoggedIn()) {
+            // Staring MainActivity
+            Log.d("CBERS", "User already logged in.");
+            Intent i = new Intent(getApplicationContext(), CurrentStatus.class);
+            startActivity(i);
+            mAuthTask = null;
+            finish();
+        }
         setContentView(R.layout.activity_login);
+
+
+
+
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
@@ -302,29 +327,60 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         UserLoginTask(String email, String password) {
             mEmail = email;
             mPassword = password;
+
         }
 
         @Override
-        protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
+        protected Boolean doInBackground(final Void... params) {
 
-            try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                return false;
-            }
+            Log.d("CBERS", "Trying login");
+            final RequestParams reqParams = new RequestParams();
+            reqParams.put("email", mEmail);
+            reqParams.put("password", mPassword);
 
-            for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail)) {
-                    // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
+
+            Handler mainHandler = new Handler(Looper.getMainLooper());
+            Runnable myRunnable = new Runnable() {
+                @Override
+                public void run() {
+                    //Code that uses AsyncHttpClient in your case ConsultaCaract()
+                    HttpUtils.post("login", reqParams, new JsonHttpResponseHandler() {
+                        @Override
+                        public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                            // If the response is JSONObject instead of expected JSONArray
+                            Log.d("CBERS", "StatusCode : " + statusCode);
+                            Log.d("CBERS", "Response : " + response);
+                            try {
+                                JSONObject serverResp = new JSONObject(response.toString());
+                                long ptId = serverResp.getLong("id");
+                                Log.d("CBERS", "Patient Id : " + ptId);
+                                if (statusCode == 200) {
+                                    session.createLoginSession(mEmail, ptId);
+
+                                    // Staring MainActivity
+                                    Intent i = new Intent(getApplicationContext(), CurrentStatus.class);
+                                    startActivity(i);
+                                    finish();
+                                    loginSuccess = true;
+                                }
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        @Override
+                        public void onSuccess(int statusCode, Header[] headers, JSONArray timeline) {
+                            // Pull out the first event on the public timeline
+
+                        }
+                    });
                 }
-            }
+            };
+            mainHandler.post(myRunnable);
 
-            // TODO: register the new account here.
-            return true;
+
+            return loginSuccess;
         }
 
         @Override
