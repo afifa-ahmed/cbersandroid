@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.PopupMenu;
+import android.widget.TextView;
 
 import com.example.cbers.common.HttpUtils;
 import com.example.cbers.common.SessionManager;
@@ -64,6 +65,9 @@ public class CurrentStatus extends AppCompatActivity {
         final StableArrayAdapter adapter = new StableArrayAdapter(this,
                 android.R.layout.simple_list_item_1, list);
         listview.setAdapter(adapter);
+
+        TextView t = findViewById(R.id.doctorAdvice);
+        t.setText("You are going to die soon, please prepare for funeral. You should have take care, when you had chance. Now nothing can be done.");
     }
 
     @Override

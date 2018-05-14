@@ -19,4 +19,5 @@
     <string name="title_notifications">Notifications</string>
     <string name="query_button">Ask Doctor</string>
     <string name="nav_logout">Logout</string>
+    <string name="doctor_advice">Please take care of your self. Self help is the best help. Paying us without care is not good.</string>
 </resources>
