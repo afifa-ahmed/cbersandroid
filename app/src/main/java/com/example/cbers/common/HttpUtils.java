@@ -8,11 +8,12 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
 public class HttpUtils {
-    private static final String BASE_URL = "http://10.0.2.2:8080//cbers/";
+    private static final String BASE_URL = "http://10.0.2.2:8080/cbers/";
 
     private static AsyncHttpClient client = new AsyncHttpClient();
     static {
         client.addHeader("User-agent", System.getProperty("http.agent"));
+        client.addHeader("Authorization", "Basic dXNlcjpAbGxvdzNk");
     }
 
     public static void get(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
