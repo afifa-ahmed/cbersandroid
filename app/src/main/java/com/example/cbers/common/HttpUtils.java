@@ -11,6 +11,9 @@ public class HttpUtils {
     private static final String BASE_URL = "http://10.0.2.2:8080//cbers/";
 
     private static AsyncHttpClient client = new AsyncHttpClient();
+    static {
+        client.addHeader("User-agent", System.getProperty("http.agent"));
+    }
 
     public static void get(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
         client.get(getAbsoluteUrl(url), params, responseHandler);

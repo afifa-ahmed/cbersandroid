@@ -17,4 +17,6 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+    <string name="query_button">Ask Doctor</string>
+    <string name="nav_logout">Logout</string>
 </resources>
