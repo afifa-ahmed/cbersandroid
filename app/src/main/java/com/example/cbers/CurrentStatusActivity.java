@@ -79,8 +79,8 @@ public class CurrentStatusActivity extends AppCompatActivity {
         mFetchStatusTask.execute((Void) null);
         lv = (ListView) findViewById(R.id.statusList);
 
-//        TextView t = findViewById(R.id.doctorAdvice);
-//        t.setText("You are going to die soon, please prepare for funeral. You should have take care, when you had chance. Now nothing can be done.");
+        TextView t = findViewById(R.id.doctorAdvice);
+        t.setText("You are going to die soon, please prepare for funeral. You should have take care, when you had chance. Now nothing can be done.");
     }
 
     @Override
