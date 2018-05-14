@@ -81,7 +81,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         if(session.isLoggedIn()) {
             // Staring MainActivity
             Log.d("CBERS", "User already logged in.");
-            Intent i = new Intent(getApplicationContext(), CurrentStatus.class);
+            Intent i = new Intent(getApplicationContext(), CurrentStatusActivity.class);
             startActivity(i);
             mAuthTask = null;
             finish();
@@ -358,7 +358,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                     session.createLoginSession(mEmail, ptId);
 
                                     // Staring MainActivity
-                                    Intent i = new Intent(getApplicationContext(), CurrentStatus.class);
+                                    Intent i = new Intent(getApplicationContext(), CurrentStatusActivity.class);
                                     startActivity(i);
                                     finish();
                                     loginSuccess = true;

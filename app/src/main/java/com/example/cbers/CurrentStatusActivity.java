@@ -32,7 +32,7 @@ import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
 
-public class CurrentStatus extends AppCompatActivity {
+public class CurrentStatusActivity extends AppCompatActivity {
 
     SessionManager session;
     boolean fetchStatusSucces;
@@ -68,6 +68,14 @@ public class CurrentStatus extends AppCompatActivity {
 
         TextView t = findViewById(R.id.doctorAdvice);
         t.setText("You are going to die soon, please prepare for funeral. You should have take care, when you had chance. Now nothing can be done.");
+
+
+
+    }
+
+    void openQueryForm(View view) {
+        Intent intent = new Intent(this, QueryActivity.class);
+        startActivity(intent);
     }
 
     @Override
