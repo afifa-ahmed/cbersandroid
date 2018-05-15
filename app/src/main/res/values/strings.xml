@@ -22,4 +22,5 @@
     <string name="doctor_advice">Please take care of your self. Self help is the best help. Paying us without care is not good.</string>
     <string name="ask_query_button">Submit Query</string>
     <string name="query_text_hint">Please enter your query here.</string>
+    <string name="error_invalid_query">Query should contain min 10 chars.</string>
 </resources>
