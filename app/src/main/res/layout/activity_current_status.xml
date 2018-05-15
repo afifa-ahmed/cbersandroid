@@ -52,13 +52,11 @@
         android:layout_marginRight="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:text="@string/doctor_advice"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/statusList"
-         />
+        app:layout_constraintTop_toBottomOf="@+id/statusList" />
 
 
 </android.support.constraint.ConstraintLayout>

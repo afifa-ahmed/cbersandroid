@@ -58,6 +58,8 @@ public class CurrentStatusActivity extends AppCompatActivity {
     ArrayAdapter<String> adapter;
     ListView lv;
 
+    TextView t;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,8 +81,7 @@ public class CurrentStatusActivity extends AppCompatActivity {
         mFetchStatusTask.execute((Void) null);
         lv = (ListView) findViewById(R.id.statusList);
 
-        TextView t = findViewById(R.id.doctorAdvice);
-        t.setText("You are going to die soon, please prepare for funeral. You should have take care, when you had chance. Now nothing can be done.");
+        t = findViewById(R.id.doctorAdvice);
     }
 
     @Override
@@ -138,6 +139,7 @@ public class CurrentStatusActivity extends AppCompatActivity {
                             try {
                                 JSONObject serverResp = new JSONObject(response.toString());
                                 long ptId = serverResp.getLong("id");
+
                                 Log.d("CBERS", "Patient Id : " + ptId);
                                 if (statusCode == 200) {
                                     // TODO ADAPTER CODE
@@ -153,6 +155,29 @@ public class CurrentStatusActivity extends AppCompatActivity {
                                     lv.setAdapter(adapter);
                                     adapter.notifyDataSetChanged();
                                     Log.d("CBERS", "Adapter Set");
+
+                                    String problem = null;
+                                    String solution = null;
+                                    try {
+                                        problem = serverResp.getString("query");
+                                        solution = serverResp.getString("solution");
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                        Log.d("CBERS", "No query/Solution. " + e.getMessage());
+                                    }
+
+                                    String textString = "";
+                                    if (problem != null && !"".equals(problem) && !"null".equalsIgnoreCase(problem)) {
+                                        textString += "Problem: " + problem + "\n";
+                                        if (solution != null && !"".equals(solution) && !"null".equalsIgnoreCase(solution)) {
+                                            textString += "Doctor's Update: " + solution;
+                                        } else {
+                                            textString += "Doctor's Update: AWAITED";
+                                        }
+                                    }
+
+                                    if (!"".equals(textString))
+                                        t.setText(textString);
                                     fetchStatusSucces = true;
                                 }
 
