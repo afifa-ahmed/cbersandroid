@@ -1,0 +1,38 @@
+{
+  "project_info": {
+    "project_number": "476618129747",
+    "firebase_url": "https://cbers-c8c55.firebaseio.com",
+    "project_id": "cbers-c8c55",
+    "storage_bucket": "cbers-c8c55.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:476618129747:android:f2ed8730c3d11b96",
+        "android_client_info": {
+          "package_name": "com.example.cbers"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "476618129747-o3slb7ptds20hcealb42vri4i5rn7r73.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [{ "current_key": "BLAkPnzySnvzihUoBl2x6iOKtVHwBw9gtM-MOXDD5-Xz7m2ZRqDejawRI8-0p1svTvYqDRSHAEaAdgJI1-WVGqU" }],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
