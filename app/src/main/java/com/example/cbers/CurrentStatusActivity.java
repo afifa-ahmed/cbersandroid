@@ -1,42 +1,26 @@
 package com.example.cbers;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.annotation.TargetApi;
-import android.app.ActionBar;
-import android.app.ListActivity;
-import android.content.Context;
-import android.content.CursorLoader;
 import android.content.Intent;
-import android.content.Loader;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
-import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.ProgressBar;
-import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
+import com.example.cbers.common.CustomListAdapter;
 import com.example.cbers.common.HttpUtils;
 import com.example.cbers.common.SessionManager;
+import com.example.cbers.common.StatusListItem;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
-
-import android.app.LoaderManager.LoaderCallbacks;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -44,7 +28,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -59,7 +42,7 @@ public class CurrentStatusActivity extends AppCompatActivity {
     ArrayAdapter<String> adapter;
     ListView lv;
 
-    TextView t;
+    TextView mDoctorAdviceText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,7 +65,7 @@ public class CurrentStatusActivity extends AppCompatActivity {
         mFetchStatusTask.execute((Void) null);
         lv = (ListView) findViewById(R.id.statusList);
 
-        t = findViewById(R.id.doctorAdvice);
+        mDoctorAdviceText = findViewById(R.id.doctorAdvice);
         Button mAskDoctorButton = (Button) findViewById(R.id.queryButton);
         mAskDoctorButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -151,14 +134,14 @@ public class CurrentStatusActivity extends AppCompatActivity {
                                 Log.d("CBERS", "Patient Id : " + ptId);
                                 if (statusCode == 200) {
                                     // TODO ADAPTER CODE
-                                    listItems.add("Temparature: " + serverResp.getInt("temperature"));
-                                    listItems.add("Heart Rate: " + serverResp.getInt("heartRate"));
-                                    listItems.add("Blood Pressure: " + serverResp.getString("bloodPressure").replace("-", "/"));
-                                    listItems.add("Sugar: " + serverResp.getInt("bloodSugar"));
+                                    listItems.add(StatusListItem.TEMPERATURE + ": " + serverResp.getInt("temperature"));
+                                    listItems.add(StatusListItem.HEART_RATE + ": " + serverResp.getInt("heartRate"));
+                                    listItems.add(StatusListItem.BP + ": " + serverResp.getString("bloodPressure").replace("-", "/"));
+                                    listItems.add(StatusListItem.SUGAR + ": " + serverResp.getInt("bloodSugar"));
                                     Log.d("CBERS", "Response : " + listItems);
 
-                                    adapter = new ArrayAdapter<String>(getApplicationContext(),
-                                            android.R.layout.simple_list_item_1,
+                                    adapter = new CustomListAdapter<String>(getApplicationContext(),
+                                            R.layout.item_list_txt,
                                             listItems);
                                     lv.setAdapter(adapter);
                                     adapter.notifyDataSetChanged();
@@ -181,11 +164,13 @@ public class CurrentStatusActivity extends AppCompatActivity {
                                             textString += "Doctor's Update: " + solution;
                                         } else {
                                             textString += "Doctor's Update: AWAITED";
+//                                            myTextView.setTextColor(color);
+//                                            mDoctorAdviceText.setBackgroundColor(Color.LTGRAY);
                                         }
                                     }
 
                                     if (!"".equals(textString))
-                                        t.setText(textString);
+                                        mDoctorAdviceText.setText(textString);
                                     fetchStatusSucces = true;
                                 }
 
