@@ -23,7 +23,6 @@
         android:layout_marginRight="16dp"
         android:layout_marginStart="16dp"
         android:text="@string/query_button"
-        android:onClick="openQueryForm"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"

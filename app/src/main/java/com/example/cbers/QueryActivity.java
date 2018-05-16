@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -52,9 +53,17 @@ public class QueryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_query);
 
         mQueryView = (EditText) findViewById(R.id.queryText);
+
+        Button mQueryrButton = (Button) findViewById(R.id.askQueryButton);
+        mQueryrButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                doQuerySubmit();
+            }
+        });
     }
 
-    void doQuerySubmit(View view) {
+    void doQuerySubmit() {
         String query = mQueryView.getText().toString();
         if (query.trim().length() < 10) {
             mQueryView.setError(getString(R.string.error_invalid_query));

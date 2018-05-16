@@ -25,6 +25,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.SimpleCursorAdapter;
@@ -82,6 +83,13 @@ public class CurrentStatusActivity extends AppCompatActivity {
         lv = (ListView) findViewById(R.id.statusList);
 
         t = findViewById(R.id.doctorAdvice);
+        Button mAskDoctorButton = (Button) findViewById(R.id.queryButton);
+        mAskDoctorButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openQueryForm();
+            }
+        });
     }
 
     @Override
@@ -99,7 +107,7 @@ public class CurrentStatusActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    void openQueryForm(View view) {
+    void openQueryForm() {
         Intent intent = new Intent(this, QueryActivity.class);
         startActivity(intent);
     }
