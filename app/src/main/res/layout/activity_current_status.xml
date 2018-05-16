@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:visibility="gone" />
 
-    <Button
+    <Button style="@style/Widget.AppCompat.Button.Colored"
         android:id="@+id/queryButton"
         android:layout_width="0dp"
         android:layout_height="48dp"
@@ -32,7 +32,7 @@
     <ListView
         android:id="@+id/statusList"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="210dp"
         android:layout_marginEnd="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
@@ -51,8 +51,13 @@
         android:layout_marginRight="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:textStyle="bold"
+        android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
+        android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
+        android:paddingRight="?android:attr/listPreferredItemPaddingRight"
+        android:paddingStart="?android:attr/listPreferredItemPaddingStart"
+        android:background="@android:drawable/alert_light_frame"
+        android:text="Hello Friend"
+        android:textAppearance="@android:style/TextAppearance.Theme"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/statusList" />

@@ -2,10 +2,12 @@ package com.example.cbers;
 
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -159,18 +161,22 @@ public class CurrentStatusActivity extends AppCompatActivity {
 
                                     String textString = "";
                                     if (problem != null && !"".equals(problem) && !"null".equalsIgnoreCase(problem)) {
-                                        textString += "Problem: " + problem + "\n";
+                                        textString += "<b>Problem:</> " + problem + "<br>";
                                         if (solution != null && !"".equals(solution) && !"null".equalsIgnoreCase(solution)) {
-                                            textString += "Doctor's Update: " + solution;
+                                            textString += "<b>Doctor's Update:</> " + solution;
                                         } else {
-                                            textString += "Doctor's Update: AWAITED";
+                                            textString += "<b>Doctor's Update:</> <font color=\"Red\"> AWAITED </font>";
 //                                            myTextView.setTextColor(color);
 //                                            mDoctorAdviceText.setBackgroundColor(Color.LTGRAY);
                                         }
                                     }
 
-                                    if (!"".equals(textString))
-                                        mDoctorAdviceText.setText(textString);
+                                    if (!"".equals(textString)) {
+                                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+                                            mDoctorAdviceText.setText(Html.fromHtml(textString, Html.FROM_HTML_MODE_COMPACT));
+                                        else
+                                            mDoctorAdviceText.setText(Html.fromHtml(textString));
+                                    }
                                     fetchStatusSucces = true;
                                 }
 
