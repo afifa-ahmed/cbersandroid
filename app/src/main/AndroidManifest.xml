@@ -33,12 +33,14 @@
                 android:value=".CurrentStatusActivity" />
         </activity>
 
-        <service android:name="com.example.cbers.common.MessageReceiver">
+        <service android:name="com.example.cbers.common.MessageReceiver"  android:enabled="true"
+            android:exported="true">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <service android:name="com.example.cbers.common.InstanceIdService">
+        <service android:name="com.example.cbers.common.InstanceIdService"  android:enabled="true"
+            android:exported="true">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
