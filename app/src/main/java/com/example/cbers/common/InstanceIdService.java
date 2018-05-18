@@ -1,13 +1,27 @@
 package com.example.cbers.common;
 
+import android.content.SharedPreferences;
+import android.os.Handler;
+import android.os.Looper;
+import android.preference.PreferenceManager;
+import android.util.Log;
+
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
+import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+
+import cz.msebera.android.httpclient.Header;
 
 /**
  * Created by What's That Lambda on 11/6/17.
@@ -23,37 +37,24 @@ public class InstanceIdService extends FirebaseInstanceIdService {
         super.onTokenRefresh();
         String token = FirebaseInstanceId.getInstance().getToken();
 
+        Log.d("CBERS", "In onTokenRefresh()");
         //sends this token to the server
-        sendToServer(token);
+        saveTokenToPrefs(token);
     }
 
-    private void sendToServer(String token) {
+    private void saveTokenToPrefs(String _token) {
+        // Access Shared Preferences
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = preferences.edit();
 
-        try { //TODO
-            URL url = new URL("https://www.whatsthatlambda.com/store");
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-
-            connection.setDoOutput(true);
-            connection.setDoInput(true);
-
-            connection.setRequestMethod("POST");
-
-            DataOutputStream dos = new DataOutputStream(connection.getOutputStream());
-
-            dos.writeBytes("token=" + token);
-
-            connection.connect();
-
-            if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
-                // Do whatever you want after the
-                // token is successfully stored on the server
-            }
-            dos.close();
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        // Save to SharedPreferences
+        editor.putString("cbers_token", _token);
+        editor.putBoolean("newToken", true);
+        editor.apply();
+        Log.d("CBERS", "Token set in pref:  "+_token);
     }
+
 
 }
+
+
